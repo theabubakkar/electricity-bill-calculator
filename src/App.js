@@ -29,23 +29,34 @@ const App = () => {
     });
   };
 
-  // Function to export results as PDF
+  // Function to export results and form data as PDF
   const exportPDF = () => {
-    if (!results) return;
+      if (!results) return;
     
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Electricity Bill Details", 10, 20);
+      const doc = new jsPDF();
+      doc.setFontSize(16);
+      doc.text("Electricity Bill Details", 10, 20);
     
-    doc.setFontSize(12);
-    doc.text(`Off Peak Cost: Rs. ${results.offPeakCost}`, 10, 40);
-    doc.text(`Peak Cost: Rs. ${results.peakCost}`, 10, 50);
-    doc.text(`Total Electricity Cost: Rs. ${results.totalCost}`, 10, 60);
-    doc.text(`Tax (at ${parseFloat(taxRate) * 100}%): Rs. ${results.taxAmount}`, 10, 70);
-    doc.text(`Final Cost (inclusive of tax): Rs. ${results.finalCost}`, 10, 80);
+      // Include Form Fields Data
+      doc.setFontSize(12);
+      doc.text("Meter Readings:", 10, 30);
+      doc.text(`Off Peak Units: ${offPeakUnits}`, 10, 40);
+      doc.text(`Peak Units: ${peakUnits}`, 10, 50);
+      doc.text(`Off Peak Rate (Rs.): ${offPeakRate}`, 10, 60);
+      doc.text(`Peak Rate (Rs.): ${peakRate}`, 10, 70);
+      doc.text(`Tax Rate: ${parseFloat(taxRate) * 100}%`, 10, 80);
     
-    doc.save("electricity_bill.pdf");
-  };
+      // Include Calculated Results
+      doc.text("Bill Calculations:", 10, 100);
+      doc.text(`Off Peak Cost: Rs. ${results.offPeakCost}`, 10, 110);
+      doc.text(`Peak Cost: Rs. ${results.peakCost}`, 10, 120);
+      doc.text(`Total Electricity Cost: Rs. ${results.totalCost}`, 10, 130);
+      doc.text(`Tax Amount: Rs. ${results.taxAmount}`, 10, 140);
+      doc.text(`Final Cost (inclusive of tax): Rs. ${results.finalCost}`, 10, 150);
+  
+      doc.save("electricity_bill.pdf");
+    };
+  
 
   return (
     <div style={{ padding: "20px", maxWidth: "500px", margin: "0 auto" }}>
